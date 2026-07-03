@@ -9,6 +9,7 @@ namespace OyM_CLI.Repocitorios
         Tarea CrearTarea(Tarea tarea);
         void CompletarTarea(int id);
         void EliminarTarea(int id);
+        void DescompletarTarea(int id);
 
     }
 }

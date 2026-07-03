@@ -107,4 +107,14 @@ public class RepositorioTareas : IRepositorioTareas
         comando.Parameters.AddWithValue("$id", id);
         comando.ExecuteNonQuery();
     }
+    public void DescompletarTarea(int id)
+    {
+        using var conexion = new SqliteConnection(conection);
+        conexion.Open();
+
+        var comando = conexion.CreateCommand();
+        comando.CommandText = "UPDATE Tareas SET Completado = 0, FechaCompletado = NULL WHERE Id = $id";
+        comando.Parameters.AddWithValue("$id", id);
+        comando.ExecuteNonQuery();
+    }
 }

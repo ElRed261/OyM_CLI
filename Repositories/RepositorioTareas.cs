@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using Microsoft.Data.Sqlite;
 using OyM_CLI.Models;
 
-namespace OyM_CLI.Repocitorios;
+namespace OyM_CLI.Repositories;
 
 public class RepositorioTareas : IRepositorioTareas
 {
@@ -55,7 +55,31 @@ public class RepositorioTareas : IRepositorioTareas
     }
     public Tarea? ObtenerTarea(int id)
     {
-        throw new NotImplementedException();
+        using var conexion = new SqliteConnection(conection);
+        conexion.Open();
+
+        var comando = conexion.CreateCommand();
+        comando.CommandText = "SELECT Id, Titulo, Materia, Prioridad, FechaCreacion, FechaCierre, Completado, FechaCompletado FROM Tareas WHERE Id = $id";
+        comando.Parameters.AddWithValue("$id", id);
+
+        using var lector = comando.ExecuteReader();
+        if (lector.Read())
+        {
+            return new Tarea(
+                    lector.GetString(1),
+                    lector.GetString(2)
+                )
+                {
+                    Id = lector.GetInt32(0),
+                    Prioridad = Enum.Parse<Prioridad>(lector.GetString(3)),
+                    FechaCreacion = DateTime.Parse(lector.GetString(4)),
+                    FechaCierre = lector.IsDBNull(5) ? null : DateTime.Parse(lector.GetString(5)),
+                    Completado = lector.GetInt32(6) == 1,
+                    FechaCompletado = lector.IsDBNull(7) ? null : DateTime.Parse(lector.GetString(7))
+                };
+        }
+
+        return null;
     }
 
     public List<Tarea> ListaTareas()

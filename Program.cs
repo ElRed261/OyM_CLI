@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 using OyM_CLI.Models;
-using OyM_CLI.Repocitorios;
+using OyM_CLI.Repositories;
 using OyM_CLI.Services;
 
 namespace OyM;

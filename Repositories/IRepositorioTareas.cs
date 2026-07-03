@@ -1,6 +1,6 @@
 using OyM_CLI.Models;
 
-namespace OyM_CLI.Repocitorios
+namespace OyM_CLI.Repositories
 {
     public interface IRepositorioTareas
     {
